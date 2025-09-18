@@ -1,0 +1,696 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Class Attendance Tracker</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            line-height: 1.6;
+            color: #333;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 15px;
+            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.1);
+            overflow: hidden;
+        }
+
+        .header {
+            background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%);
+            color: white;
+            padding: 30px;
+            text-align: center;
+        }
+
+        .header h1 {
+            font-size: 2.5em;
+            margin-bottom: 10px;
+            text-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+        }
+
+        .header p {
+            font-size: 1.1em;
+            opacity: 0.9;
+        }
+
+        .content {
+            padding: 40px;
+        }
+
+        .step {
+            margin-bottom: 30px;
+        }
+
+        .step-title {
+            font-size: 1.3em;
+            font-weight: 600;
+            margin-bottom: 15px;
+            color: #4facfe;
+        }
+
+        .input-group {
+            margin-bottom: 20px;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: 500;
+            color: #555;
+        }
+
+        input[type="number"], textarea {
+            width: 100%;
+            padding: 12px 15px;
+            border: 2px solid #e1e5e9;
+            border-radius: 8px;
+            font-size: 16px;
+            transition: all 0.3s ease;
+            background: #f8f9fa;
+        }
+
+        input[type="number"]:focus, textarea:focus {
+            outline: none;
+            border-color: #4facfe;
+            background: white;
+            box-shadow: 0 0 0 3px rgba(79, 172, 254, 0.1);
+        }
+
+        textarea {
+            height: 120px;
+            resize: vertical;
+            font-family: 'Courier New', monospace;
+        }
+
+        .button {
+            background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%);
+            color: white;
+            padding: 12px 25px;
+            border: none;
+            border-radius: 25px;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 15px rgba(79, 172, 254, 0.3);
+        }
+
+        .button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(79, 172, 254, 0.4);
+        }
+
+        .button:active {
+            transform: translateY(0);
+        }
+
+        .button.secondary {
+            background: linear-gradient(135deg, #ffecd2 0%, #fcb69f 100%);
+            color: #8b4513;
+            box-shadow: 0 4px 15px rgba(252, 182, 159, 0.3);
+        }
+
+        .button.secondary:hover {
+            box-shadow: 0 6px 20px rgba(252, 182, 159, 0.4);
+        }
+
+        .hidden {
+            display: none;
+        }
+
+        .error {
+            background: #ffe6e6;
+            color: #d8000c;
+            padding: 12px 15px;
+            border-radius: 8px;
+            margin: 15px 0;
+            border-left: 4px solid #d8000c;
+        }
+
+        .success {
+            background: #e6ffe6;
+            color: #006600;
+            padding: 12px 15px;
+            border-radius: 8px;
+            margin: 15px 0;
+            border-left: 4px solid #006600;
+        }
+
+        .attendance-results {
+            background: #f8f9fa;
+            border-radius: 10px;
+            padding: 25px;
+            margin-top: 20px;
+        }
+
+        .stats {
+            display: flex;
+            justify-content: space-around;
+            margin-bottom: 25px;
+            text-align: center;
+        }
+
+        .stat-card {
+            background: white;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+            flex: 1;
+            margin: 0 10px;
+        }
+
+        .stat-number {
+            font-size: 2em;
+            font-weight: bold;
+            margin-bottom: 5px;
+        }
+
+        .stat-label {
+            color: #666;
+            font-size: 0.9em;
+        }
+
+        .present { color: #28a745; }
+        .absent { color: #dc3545; }
+        .total { color: #4facfe; }
+
+        .attendance-list {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 20px;
+            margin-top: 20px;
+        }
+
+        .attendance-column {
+            flex: 1;
+            min-width: 300px;
+            max-width: 350px;
+        }
+
+        .column-header {
+            background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%);
+            color: white;
+            padding: 10px 15px;
+            border-radius: 8px 8px 0 0;
+            font-weight: 600;
+            text-align: center;
+            margin-bottom: 0;
+        }
+
+        .student-item {
+            background: white;
+            padding: 12px 20px;
+            border-radius: 0;
+            border-left: 4px solid;
+            box-shadow: none;
+            border-bottom: 1px solid #eee;
+            transition: transform 0.2s ease;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .student-item:last-child {
+            border-radius: 0 0 8px 8px;
+            border-bottom: none;
+        }
+
+        .student-item:hover {
+            background: #f8f9fa;
+            transform: none;
+        }
+
+        .student-item.present {
+            border-left-color: #28a745;
+        }
+
+        .student-item.absent {
+            border-left-color: #dc3545;
+        }
+
+        .roll-number {
+            font-weight: bold;
+            font-size: 1.1em;
+        }
+
+        .status {
+            font-size: 1em;
+            font-weight: 600;
+        }
+
+        @media (max-width: 768px) {
+            .header h1 {
+                font-size: 2em;
+            }
+            
+            .content {
+                padding: 20px;
+            }
+            
+            .stats {
+                flex-direction: column;
+            }
+            
+            .stat-card {
+                margin: 5px 0;
+            }
+            
+
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>📋 Class Attendance Tracker</h1>
+            <p>Efficiently manage and track student attendance</p>
+        </div>
+        
+        <div class="content">
+            <!-- Step 1: Initial Setup -->
+            <div id="setup-section" class="step">
+                <div class="step-title">Step 1: Class Setup</div>
+                <div class="input-group">
+                    <label for="totalStrength">Enter Total Class Strength:</label>
+                    <input type="number" id="totalStrength" min="1" placeholder="e.g., 30">
+                </div>
+                <button id="startAttendanceBtn" class="button" onclick="startAttendance()">
+                    Start Attendance 🚀
+                </button>
+            </div>
+
+            <!-- Step 2: Attendance Input -->
+            <div id="attendance-section" class="step hidden">
+                <div class="step-title">Step 2: Mark Attendance</div>
+                <div class="input-group">
+                    <label for="rollNumbers">Enter Roll Numbers (separated by commas or new lines):</label>
+                    <textarea id="rollNumbers" placeholder="1, 3, 5, 7, 9&#10;or&#10;1&#10;3&#10;5&#10;7&#10;9"></textarea>
+                </div>
+                <button id="endAttendanceBtn" class="button" onclick="endAttendance()">
+                    End Attendance ✓
+                </button>
+            </div>
+
+            <!-- Step 3: Results and Edit -->
+            <div id="results-section" class="step hidden">
+                <div class="step-title">Attendance Results</div>
+                <div id="attendanceResults"></div>
+                <button id="editAttendanceBtn" class="button secondary" onclick="editAttendance()">
+                    Edit Attendance ✏️
+                </button>
+                <button id="downloadBtn" class="button" onclick="downloadAttendance()" style="margin-left: 10px;">
+                    Download PNG 📥
+                </button>
+            </div>
+
+            <!-- Edit Section -->
+            <div id="edit-section" class="step hidden">
+                <div class="step-title">Edit Attendance</div>
+                <div class="input-group">
+                    <label for="editRollNumbers">Modify Roll Numbers:</label>
+                    <textarea id="editRollNumbers"></textarea>
+                </div>
+                <button id="saveChangesBtn" class="button" onclick="saveChanges()">
+                    Save Changes 💾
+                </button>
+            </div>
+
+            <!-- Messages -->
+            <div id="messages"></div>
+        </div>
+    </div>
+
+    <script>
+        // Global variables to store application state
+        let totalClassStrength = 0;
+        let presentStudents = [];
+        let allStudents = [];
+
+        /**
+         * Initialize attendance process after total strength is entered
+         */
+        function startAttendance() {
+            const strengthInput = document.getElementById('totalStrength');
+            const strength = parseInt(strengthInput.value);
+            
+            // Validate input
+            if (!strength || strength < 1) {
+                showMessage('Please enter a valid positive number for class strength.', 'error');
+                return;
+            }
+
+            // Store total strength and generate full student list
+            totalClassStrength = strength;
+            allStudents = Array.from({length: strength}, (_, i) => i + 1);
+            
+            // Show attendance input section
+            document.getElementById('setup-section').classList.add('hidden');
+            document.getElementById('attendance-section').classList.remove('hidden');
+            
+            showMessage(`Class strength set to ${strength} students. Now enter roll numbers of present students.`, 'success');
+            
+            // Focus on the textarea for better UX
+            document.getElementById('rollNumbers').focus();
+        }
+
+        /**
+         * Process attendance input and generate results
+         */
+        function endAttendance() {
+            const rollNumbersInput = document.getElementById('rollNumbers').value.trim();
+            
+            if (!rollNumbersInput) {
+                showMessage('Please enter at least one roll number.', 'error');
+                return;
+            }
+
+            // Process and validate roll numbers
+            const processedRollNumbers = processRollNumbers(rollNumbersInput);
+            
+            if (processedRollNumbers === null) {
+                return; // Error message already shown by processRollNumbers
+            }
+
+            // Store present students and generate attendance report
+            presentStudents = processedRollNumbers;
+            generateAttendanceReport();
+            
+            // Show results section
+            document.getElementById('attendance-section').classList.add('hidden');
+            document.getElementById('results-section').classList.remove('hidden');
+        }
+
+        /**
+         * Enable editing of attendance
+         */
+        function editAttendance() {
+            // Populate edit textarea with current present students
+            document.getElementById('editRollNumbers').value = presentStudents.join(', ');
+            
+            // Show edit section
+            document.getElementById('results-section').classList.add('hidden');
+            document.getElementById('edit-section').classList.remove('hidden');
+            
+            // Focus on edit textarea
+            document.getElementById('editRollNumbers').focus();
+        }
+
+        /**
+         * Save attendance changes
+         */
+        function saveChanges() {
+            const editedRollNumbers = document.getElementById('editRollNumbers').value.trim();
+            
+            if (!editedRollNumbers) {
+                showMessage('Please enter at least one roll number.', 'error');
+                return;
+            }
+
+            // Process and validate edited roll numbers
+            const processedRollNumbers = processRollNumbers(editedRollNumbers);
+            
+            if (processedRollNumbers === null) {
+                return; // Error message already shown by processRollNumbers
+            }
+
+            // Update present students and regenerate report
+            presentStudents = processedRollNumbers;
+            generateAttendanceReport();
+            
+            // Show updated results
+            document.getElementById('edit-section').classList.add('hidden');
+            document.getElementById('results-section').classList.remove('hidden');
+            
+            showMessage('Attendance updated successfully!', 'success');
+        }
+
+        /**
+         * Process and validate roll numbers from input string
+         * @param {string} input - Raw input string containing roll numbers
+         * @returns {Array|null} - Array of valid roll numbers or null if error
+         */
+        function processRollNumbers(input) {
+            // Split by commas and/or newlines, then clean up
+            const rollNumberStrings = input
+                .split(/[,\n]+/)
+                .map(str => str.trim())
+                .filter(str => str.length > 0);
+
+            const rollNumbers = [];
+            const invalidNumbers = [];
+
+            // Validate each roll number
+            for (let str of rollNumberStrings) {
+                const num = parseInt(str);
+                
+                // Check if it's a valid integer
+                if (isNaN(num) || !Number.isInteger(parseFloat(str))) {
+                    invalidNumbers.push(str);
+                    continue;
+                }
+                
+                // Automatically filter out-of-range numbers (no error message)
+                if (num >= 1 && num <= totalClassStrength) {
+                    rollNumbers.push(num);
+                }
+            }
+
+            // Only show error for non-numeric inputs
+            if (invalidNumbers.length > 0) {
+                showMessage(`Invalid roll numbers (non-numeric): ${invalidNumbers.join(', ')}`, 'error');
+                return null;
+            }
+
+            // Remove duplicates and sort (automatic deduplication)
+            const uniqueRollNumbers = [...new Set(rollNumbers)].sort((a, b) => a - b);
+            
+            return uniqueRollNumbers;
+        }
+
+        /**
+         * Generate and display attendance report
+         */
+        function generateAttendanceReport() {
+            const absentStudents = allStudents.filter(rollNo => !presentStudents.includes(rollNo));
+            
+            // Calculate statistics
+            const totalPresent = presentStudents.length;
+            const totalAbsent = absentStudents.length;
+            const attendancePercentage = ((totalPresent / totalClassStrength) * 100).toFixed(1);
+
+            // Generate HTML for results
+            let html = `
+                <div class="stats">
+                    <div class="stat-card">
+                        <div class="stat-number present">${totalPresent}</div>
+                        <div class="stat-label">Present</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-number absent">${totalAbsent}</div>
+                        <div class="stat-label">Absent</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-number total">${attendancePercentage}%</div>
+                        <div class="stat-label">Attendance</div>
+                    </div>
+                </div>
+                
+                <div class="attendance-list">
+            `;
+
+            // Generate columns of 20 students each
+            const studentsPerColumn = 20;
+            const totalColumns = Math.ceil(totalClassStrength / studentsPerColumn);
+            
+            for (let col = 0; col < totalColumns; col++) {
+                const startRoll = col * studentsPerColumn + 1;
+                const endRoll = Math.min((col + 1) * studentsPerColumn, totalClassStrength);
+                
+                html += `
+                    <div class="attendance-column">
+                        <div class="column-header">
+                            Roll No. ${startRoll} - ${endRoll}
+                        </div>
+                `;
+                
+                // Generate student items for this column
+                for (let rollNo = startRoll; rollNo <= endRoll; rollNo++) {
+                    const isPresent = presentStudents.includes(rollNo);
+                    const status = isPresent ? 'Present ✓' : 'Absent ✗';
+                    const statusClass = isPresent ? 'present' : 'absent';
+                    
+                    html += `
+                        <div class="student-item ${statusClass}">
+                            <div class="roll-number">Roll No. ${rollNo}</div>
+                            <div class="status ${statusClass}">${status}</div>
+                        </div>
+                    `;
+                }
+                
+                html += '</div>'; // Close attendance-column
+            }
+
+            html += '</div>'; // Close attendance-list
+
+            document.getElementById('attendanceResults').innerHTML = html;
+        }
+
+        /**
+         * Display messages to user
+         * @param {string} message - Message to display
+         * @param {string} type - Message type ('success' or 'error')
+         */
+        function showMessage(message, type) {
+            const messagesDiv = document.getElementById('messages');
+            messagesDiv.innerHTML = `<div class="${type}">${message}</div>`;
+            
+            // Auto-hide success messages after 5 seconds
+            if (type === 'success') {
+                setTimeout(() => {
+                    messagesDiv.innerHTML = '';
+                }, 5000);
+            }
+        }
+
+        /**
+         * Download attendance as PNG image
+         */
+        function downloadAttendance() {
+            // Create a new canvas element
+            const canvas = document.createElement('canvas');
+            const ctx = canvas.getContext('2d');
+            
+            // Calculate dimensions based on columns
+            const studentsPerColumn = 20;
+            const totalColumns = Math.ceil(totalClassStrength / studentsPerColumn);
+            const columnWidth = 400;
+            const width = Math.max(800, totalColumns * columnWidth + 100);
+            const height = 200 + (studentsPerColumn * 35) + 100; // Header + max students per column + footer
+            
+            canvas.width = width;
+            canvas.height = height;
+            
+            // Set background
+            ctx.fillStyle = '#ffffff';
+            ctx.fillRect(0, 0, width, height);
+            
+            // Set font
+            ctx.font = '24px Arial, sans-serif';
+            ctx.textAlign = 'center';
+            
+            // Header
+            ctx.fillStyle = '#4facfe';
+            ctx.fillText('Class Attendance Report', width/2, 40);
+            
+            // Date and stats
+            ctx.font = '16px Arial, sans-serif';
+            ctx.fillStyle = '#666666';
+            const now = new Date();
+            const dateStr = now.toLocaleDateString() + ' ' + now.toLocaleTimeString();
+            ctx.fillText(`Generated on: ${dateStr}`, width/2, 70);
+            
+            const totalPresent = presentStudents.length;
+            const totalAbsent = totalClassStrength - totalPresent;
+            const attendancePercentage = ((totalPresent / totalClassStrength) * 100).toFixed(1);
+            
+            ctx.fillText(`Total Students: ${totalClassStrength} | Present: ${totalPresent} | Absent: ${totalAbsent} | Attendance: ${attendancePercentage}%`, width/2, 95);
+            
+            // Draw columns
+            ctx.font = '16px Arial, sans-serif';
+            ctx.textAlign = 'left';
+            
+            for (let col = 0; col < totalColumns; col++) {
+                const startRoll = col * studentsPerColumn + 1;
+                const endRoll = Math.min((col + 1) * studentsPerColumn, totalClassStrength);
+                const xPos = 50 + (col * columnWidth);
+                
+                // Column header
+                ctx.fillStyle = '#4facfe';
+                ctx.fillRect(xPos, 130, columnWidth - 50, 30);
+                ctx.fillStyle = '#ffffff';
+                ctx.textAlign = 'center';
+                ctx.fillText(`Roll No. ${startRoll} - ${endRoll}`, xPos + (columnWidth - 50)/2, 150);
+                ctx.textAlign = 'left';
+                
+                let yPos = 180;
+                
+                // Draw students for this column
+                for (let rollNo = startRoll; rollNo <= endRoll; rollNo++) {
+                    const isPresent = presentStudents.includes(rollNo);
+                    const status = isPresent ? 'Present ✓' : 'Absent ✗';
+                    
+                    // Background rectangle for each student
+                    ctx.fillStyle = isPresent ? '#e6ffe6' : '#ffe6e6';
+                    ctx.fillRect(xPos, yPos - 15, columnWidth - 50, 25);
+                    
+                    // Border
+                    ctx.strokeStyle = isPresent ? '#28a745' : '#dc3545';
+                    ctx.lineWidth = 2;
+                    ctx.strokeRect(xPos, yPos - 15, columnWidth - 50, 25);
+                    
+                    // Roll number
+                    ctx.fillStyle = '#333333';
+                    ctx.font = '14px Arial, sans-serif';
+                    ctx.fillText(`Roll ${rollNo}`, xPos + 10, yPos);
+                    
+                    // Status
+                    ctx.fillStyle = isPresent ? '#28a745' : '#dc3545';
+                    ctx.textAlign = 'right';
+                    ctx.fillText(status, xPos + columnWidth - 60, yPos);
+                    ctx.textAlign = 'left';
+                    
+                    yPos += 30;
+                }
+            }
+            
+            // Convert canvas to blob and download
+            canvas.toBlob(function(blob) {
+                const url = URL.createObjectURL(blob);
+                const a = document.createElement('a');
+                a.href = url;
+                a.download = `attendance_${now.getFullYear()}-${(now.getMonth()+1).toString().padStart(2, '0')}-${now.getDate().toString().padStart(2, '0')}.png`;
+                document.body.appendChild(a);
+                a.click();
+                document.body.removeChild(a);
+                URL.revokeObjectURL(url);
+                
+                showMessage('Attendance downloaded successfully!', 'success');
+            }, 'image/png');
+        }
+
+        // Allow Enter key to trigger actions
+        document.getElementById('totalStrength').addEventListener('keypress', function(e) {
+            if (e.key === 'Enter') {
+                startAttendance();
+            }
+        });
+
+        // Clear messages when user starts typing
+        document.getElementById('totalStrength').addEventListener('input', function() {
+            document.getElementById('messages').innerHTML = '';
+        });
+
+        document.getElementById('rollNumbers').addEventListener('input', function() {
+            document.getElementById('messages').innerHTML = '';
+        });
+
+        document.getElementById('editRollNumbers').addEventListener('input', function() {
+            document.getElementById('messages').innerHTML = '';
+        });
+    </script>
+</body>
+</html>
