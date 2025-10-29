@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Class Attendance Tracker</title>
+    <link rel="stylesheet" href="style.css" />
+  </head>
+  <body>
+    <div class="container">
+      <div class="header">
+        <h1>📋 Class Attendance Tracker</h1>
+        <p>Efficiently manage and track student attendance</p>
+      </div>
+
+      <div class="content">
+        <!-- Step 1: Initial Setup -->
+        <div id="setup-section" class="step">
+          <div class="step-title">Step 1: Class Setup</div>
+          <div class="input-group">
+            <label for="totalStrength">Enter Total Class Strength:</label>
+            <input
+              type="number"
+              id="totalStrength"
+              min="1"
+              placeholder="e.g., 30" />
+          </div>
+          <button
+            id="startAttendanceBtn"
+            class="button"
+            onclick="startAttendance()">
+            Start Attendance 🚀
+          </button>
+        </div>
+
+        <!-- Step 2: Attendance Input -->
+        <div id="attendance-section" class="step hidden">
+          <div class="step-title">Step 2: Mark Attendance</div>
+          <div class="input-group">
+            <label for="rollNumbers"
+              >Enter Roll Numbers (separated by commas or new lines):</label
+            >
+            <textarea
+              id="rollNumbers"
+              placeholder="1, 3, 5, 7, 9&#10;or&#10;1&#10;3&#10;5&#10;7&#10;9"></textarea>
+          </div>
+          <button
+            id="endAttendanceBtn"
+            class="button"
+            onclick="endAttendance()">
+            End Attendance ✓
+          </button>
+        </div>
+
+        <!-- Step 3: Results and Edit -->
+        <div id="results-section" class="step hidden">
+          <div class="step-title">Attendance Results</div>
+          <div id="attendanceResults"></div>
+          <button
+            id="editAttendanceBtn"
+            class="button secondary"
+            onclick="editAttendance()">
+            Edit Attendance ✏️
+          </button>
+          <button
+            id="downloadCsvBtn"
+            class="button secondary"
+            onclick="downloadAttendanceCsv()"
+            style="margin-left: 10px">
+            Download CSV 💾
+          </button>
+          <button
+            id="downloadBtn"
+            class="button"
+            onclick="downloadAttendance()"
+            style="margin-left: 10px">
+            Download PNG 📥
+          </button>
+        </div>
+
+        <!-- Edit Section -->
+        <div id="edit-section" class="step hidden">
+          <div class="step-title">Edit Attendance</div>
+          <div class="input-group">
+            <label for="editRollNumbers">Modify Roll Numbers:</label>
+            <textarea id="editRollNumbers"></textarea>
+          </div>
+          <button id="saveChangesBtn" class="button" onclick="saveChanges()">
+            Save Changes 💾
+          </button>
+        </div>
+
+        <!-- Messages -->
+        <div id="messages"></div>
+      </div>
+    </div>
+
+    <script src="script.js"></script>
+  </body>
+</html>
