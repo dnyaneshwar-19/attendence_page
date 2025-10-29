@@ -7,9 +7,16 @@ You can try the application directly here:
 
 ---
 
+## 🧭 Navigation
+
+| [Motivation & Problem Solved](#motivation--problem-solved) | [Features](#features) | [Usage Guide](#usage) | [Screenshots](#screenshots) | [Author](#author) |
+| :--------------------------------------------------------: | :-------------------: | :-------------------: | :-------------------------: | :---------------: |
+
+---
+
 An efficient, single-page web application to quickly record student attendance by processing a list of present roll numbers and instantly generating a complete report with statistics and visual status (Present/Absent).
 
-The project is built using vanilla HTML, CSS, and JavaScript, following best practices by separating structure, style, and logic into individual files.
+The project is built using HTML, CSS, and JavaScript, following best practices by separating structure, style, and logic into individual files.
 
 ---
 
@@ -26,11 +33,11 @@ Traditional, serial roll-call attendance creates a chaotic and inefficient bottl
 
 This application was created to eliminate this problem by adapting the process to how a faculty member actually scans a room, making it **faster** and **more accurate**:
 
-| Traditional Method                            | **Attendance Tracker Solution**                                                                                                                                                         |
-| :-------------------------------------------- | :-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| **Serial Roll Call** (1, 2, 3...)             | **Bench-Wise Scanning:** Faculty can quickly note present roll numbers row-by-row or **bench-by-bench**.                                                                                |
-| Time wasted calling names of Absent students. | **Input Only Presents:** Faculty only keys in the roll numbers of students who are visibly present, meaning **no need to call the name if the student is absent.**                      |
-| Errors from duplicates or incorrect numbers.  | **Automatic Validation:** The system **automatically filters out duplicates** (it only counts once) and **ignores roll numbers outside the class range**, ensuring 100% data integrity. |
+| Traditional Method                              | **Attendance Tracker Solution**                                                                                                                                                         |
+| :---------------------------------------------- | :-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| **Serial Roll Call** (1, 2, 3...)               | **Bench-Wise Scanning:** Faculty can quickly note present roll numbers row-by-row or **bench-by-bench**.                                                                                |
+| Time wasted calling Roll no of Absent students. | **Input Only Presents:** Faculty only keys in the roll numbers of students who are visibly present, meaning **no need to call the name if the student is absent.**                      |
+| Errors from duplicates or incorrect numbers.    | **Automatic Validation:** The system **automatically filters out duplicates** (it only counts once) and **ignores roll numbers outside the class range**, ensuring 100% data integrity. |
 
 By allowing faculty to input attendance based on visual confirmation rather than a rigid serial list, the process is streamlined, taking less time and greatly increasing accuracy.
 
@@ -44,8 +51,8 @@ By allowing faculty to input attendance based on visual confirmation rather than
 - **Columnar Display:** Attendance results are displayed in easy-to-read columns with a capacity of **20 students per column**.
 - **Editing Capability:** Modify the list of present students after the initial report is generated.
 - **Download Options:**
-  - **Download PNG:** Generate a clean, structured image summary of the attendance report.
-  - **Download CSV (Excel Compatible):** Export the raw roll number and status data in a multi-column format (max 20 rows per column).
+    - **Download PNG:** Generate a clean, structured image summary of the attendance report.
+    - **Download CSV (Excel Compatible):** Export the raw roll number and status data in a multi-column format (max 20 rows per column).
 
 ---
 
@@ -53,21 +60,21 @@ By allowing faculty to input attendance based on visual confirmation rather than
 
 1.  **Step 1: Class Setup**
 
-    - Enter the **Total Class Strength** (e.g., `50`).
-    - Click the **Start Attendance 🚀** button.
+- Enter the **Total Class Strength** (e.g., `50`).
+      - Click the **Start Attendance 🚀** button.
 
 2.  **Step 2: Mark Attendance**
 
-    - Enter the roll numbers of the students who are **PRESENT** in the text area. You can list them in any format (e.g., `1, 2, 5, 8, 9` or one number per line).
-    - Click the **End Attendance ✓** button.
+- Enter the roll numbers of the students who are **PRESENT** in the text area. You can list them in any format (e.g., `1, 2, 5, 8, 9` or one number per line).
+      - Click the **End Attendance ✓** button.
 
 3.  **Step 3: Review Results**
 
-    - The complete report will be displayed, showing the Present, Absent, and Attendance Percentage.
-    - The full student list will be displayed in multi-column format.
+- The complete report will be displayed, showing the Present, Absent, and Attendance Percentage.
+      - The full student list will be displayed in multi-column format.
 
 4.  **Download as CSV (For Excel):**
-    Click **Download CSV 💾** to get a file compatible with Excel.
+        Click **Download CSV 💾** to get a file compatible with Excel.
 
 ---
 
