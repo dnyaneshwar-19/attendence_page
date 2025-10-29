@@ -9,8 +9,8 @@ You can try the application directly here:
 
 ## 🧭 Navigation
 
-| [Motivation & Problem Solved](#motivation--problem-solved) | [Features](#features) | [Usage Guide](#usage) | [Screenshots](#screenshots) | [Author](#author) |
-| :--------------------------------------------------------: | :-------------------: | :-------------------: | :-------------------------: | :---------------: |
+| [Motivation](#motivation--problem-solved) | [Features](#features) | [Usage](#usage) | [Screenshots](#screenshots) | [Author](#author) |
+| :---------------------------------------: | :-------------------: | :-------------: | :-------------------------: | :---------------: |
 
 ---
 
