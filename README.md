@@ -7,13 +7,6 @@ You can try the application directly here:
 
 ---
 
-## 🧭 Navigation
-
-| [Motivation](#motivation--problem-solved) | [Features](#features) | [Usage](#usage) | [Screenshots](#screenshots) | [Author](#author) |
-| :---------------------------------------: | :-------------------: | :-------------: | :-------------------------: | :---------------: |
-
----
-
 An efficient, single-page web application to quickly record student attendance by processing a list of present roll numbers and instantly generating a complete report with statistics and visual status (Present/Absent).
 
 The project is built using HTML, CSS, and JavaScript, following best practices by separating structure, style, and logic into individual files.
